@@ -1,0 +1,71 @@
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+*.dylib
+
+# Folders to ignore
+bin/
+obj/
+dist/
+vendor/
+
+# Compiled Binary and Executables
+*.exe
+*.out
+*.dll
+*.bin
+*.run
+*.pyc
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+*.db
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Tilt
+tilt_modules/
+tilt-settings.json
+
+# Kubernetes specific
+*.kube
+*.context
+
+# IDE specific files
+.idea/
+*.swp
+*.swo
+.vscode/
+*.sublime-*
+*.iml
+*.iws
+*.ipr
+
+# Dependency directories (comment these out if you prefer to check in your vendor directory)
+node_modules/
+jspm_packages/
+bower_components/
+
+# Local .env files
+.env
+.env.*
+!.env.example
+
+# Local development
+local/
+tmp/
+
+# Custom for this project
+# Add any other file that contains sensitive information or local configuration
+secrets.yml
+credentials.json
