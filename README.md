@@ -1,3 +1,13 @@
+TODO
+
+- counters should be created with 1 occurence
+
+#### create secrets
+
+```
+k create secret generic postgres-credentials --from-env-file=.env
+```
+
 #### "jump pod"
 
 How to set this up so that I can just run a command to get into this
