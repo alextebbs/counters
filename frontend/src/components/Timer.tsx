@@ -3,7 +3,7 @@
 import { FC, useEffect, useState } from "react";
 
 interface TimerProps {
-  timestamp: string;
+  timestamp?: Date;
   paused: boolean;
 }
 
@@ -16,13 +16,12 @@ const Timer: FC<TimerProps> = ({ timestamp, paused }) => {
   });
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || !timestamp) return;
 
     const timer = setInterval(() => {
       const now = new Date();
-      const timestampDate = new Date(timestamp);
       const diffInSeconds = Math.max(
-        (now.getTime() - timestampDate.getTime()) / 1000,
+        (now.getTime() - timestamp.getTime()) / 1000,
         0
       );
 

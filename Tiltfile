@@ -18,6 +18,19 @@ k8s_yaml("k8s/postgres/postgres-pvc.yaml")
 # Apply k8s resources for 'Jump pod'
 k8s_yaml("k8s/jump/jump-pod.yaml")
 
+# ------------------------------------------------------------------------------
+# ENVOY PROXY
+# ------------------------------------------------------------------------------
+
+# Build image for envoy proxy
+docker_build('alextebbs/envoy-proxy', 'k8s/envoy/')
+
+# Apply k8s resources for API server
+k8s_yaml("k8s/envoy/envoy-deployment.yaml")
+k8s_yaml("k8s/envoy/envoy-service.yaml")
+
+# Port forward the api server so we can test the API locally
+k8s_resource('envoy-proxy', port_forwards="8080:8080")
 
 # ------------------------------------------------------------------------------
 # API SERVER
@@ -29,11 +42,9 @@ docker_build('alextebbs/counter-api', 'api/')
 # Apply k8s resources for API server
 k8s_yaml("k8s/api/api-deployment.yaml")
 k8s_yaml("k8s/api/api-service.yaml")
-k8s_yaml("k8s/api/api-ingress.yaml")
 
-# Port forward the api server so we can test the API locally
-k8s_resource('counter-api', port_forwards="8080:8080")
-
+# port forward so i can test with grpcui
+k8s_resource('counter-api', port_forwards="50051:50051")
 
 # ------------------------------------------------------------------------------
 # NEXTJS 'FRONTEND'

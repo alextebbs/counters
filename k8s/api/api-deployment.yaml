@@ -17,7 +17,7 @@ spec:
         - name: counter-api
           image: alextebbs/counter-api:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 50051
           env:
             - name: POSTGRES_DB
               valueFrom:

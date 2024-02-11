@@ -1,21 +1,24 @@
-import CounterListItem, { Counter } from "../components/CounterListItem";
+import { GrpcWebFetchTransport } from "@protobuf-ts/grpcweb-transport";
+import CounterListItem from "../components/CounterListItem";
+import { CounterServiceClient } from "../../pb/counter/v1/counter.client";
+import { Counter } from "../../pb/counter/v1/counter";
 
 // Idk why revalidateTag is not working
 export const dynamic = "force-dynamic";
 
+let transport = new GrpcWebFetchTransport({
+  baseUrl: "http://envoy-proxy:8080",
+});
+
+let client = new CounterServiceClient(transport);
+
 async function fetchCounters() {
   try {
-    const response = await fetch("http://counter-api:8080/counters", {
-      next: { tags: ["counters"] },
-    });
+    let res = await client.getCounters({ id: "" });
 
-    if (!response.ok) {
-      console.error("Server responded with status:", response.status);
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    console.log("response", res.response.counters);
 
-    const counters = await response.json();
-    return counters;
+    return res.response.counters;
   } catch (error) {
     console.error("Failed to fetch counters:", error);
     return []; // Return an empty array or appropriate error handling

@@ -2,13 +2,8 @@ import { cn } from "@/utils/cn";
 import Link from "next/link";
 import { FC } from "react";
 import Timer from "./Timer";
-
-export interface Counter {
-  id: number;
-  title: string;
-  count: number;
-  timestamp: string;
-}
+import { Counter } from "../../pb/counter/v1/counter";
+import { Timestamp } from "../../pb/google/protobuf/timestamp";
 
 interface CounterListItemProps extends Counter {
   preview: boolean;
@@ -23,6 +18,7 @@ const CounterListItem: FC<CounterListItemProps> = ({
   timestamp,
   id,
 }) => {
+  console.log("timestamp", timestamp);
   return (
     <div
       className={cn(
@@ -30,7 +26,12 @@ const CounterListItem: FC<CounterListItemProps> = ({
         !preview && `border-b`
       )}
     >
-      <Timer paused={paused} timestamp={timestamp} />
+      <Timer
+        paused={paused}
+        // We need to convert this to a Date here because NextJS can't pass
+        // Protobuf Timestamps to the client, since they aren't "plain objects".
+        timestamp={timestamp && Timestamp.toDate(timestamp)}
+      />
 
       <h1 className="text-sm mb-1">Time since {title}.</h1>
       <h1 className="text-sm text-neutral-600">

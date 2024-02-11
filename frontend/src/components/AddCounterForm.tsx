@@ -5,10 +5,18 @@ import React, { FC } from "react";
 import { useForm } from "react-hook-form";
 import CounterListItem from "./CounterListItem";
 import { useRouter } from "next/navigation";
+import { GrpcWebFetchTransport } from "@protobuf-ts/grpcweb-transport";
+import { CounterServiceClient } from "../../pb/counter/v1/counter.client";
 
 interface AddCounterFormProps {
   setAddFormIsActive: (isActive: boolean) => void;
 }
+
+let transport = new GrpcWebFetchTransport({
+  baseUrl: "http://localhost:8080",
+});
+
+let client = new CounterServiceClient(transport);
 
 const AddCounterForm: FC<AddCounterFormProps> = ({ setAddFormIsActive }) => {
   const router = useRouter();
@@ -28,24 +36,9 @@ const AddCounterForm: FC<AddCounterFormProps> = ({ setAddFormIsActive }) => {
     title: string;
     eventTitle: string;
   }) => {
-    try {
-      const response = await fetch("http://localhost:8080/counters", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, eventTitle }),
-      });
+    let res = await client.createCounter({ title, eventTitle });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      setAddFormIsActive(false);
-      router.refresh();
-    } catch (error) {
-      console.error("Failed to create counter:", error);
-    }
+    console.log("response", res);
   };
 
   return (

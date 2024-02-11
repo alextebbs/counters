@@ -17,5 +17,5 @@ container and do these things:
 ϟ k exec -it --namespace counter jump-pod -- /bin/sh
 / # apk update
 / # apk add postgresql-client
-/ # psql -h postgres-service -p 5432 -U DB_USER -d DB_NAME
+/ # psql -h postgres -p 5432 -U DB_USER -d DB_NAME
 ```

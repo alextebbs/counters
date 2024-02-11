@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@protobuf-ts/grpcweb-transport": "^2.9.3",
+    "@protobuf-ts/runtime": "^2.9.3",
+    "@protobuf-ts/runtime-rpc": "^2.9.3",
     "clsx": "^2.1.0",
     "date-fns": "^3.3.1",
     "geist": "^1.2.1",

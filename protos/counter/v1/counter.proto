@@ -1,0 +1,89 @@
+// Additional request and response messages...
+syntax = "proto3";
+
+package main;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/alextebbs/counters/api/protos/counter";
+
+// Message definition for Counter
+message Counter {
+  string id = 1;
+  string title = 2;
+  int32 count = 3;
+  google.protobuf.Timestamp timestamp = 4;
+}
+
+// Message definition for Event
+message Event {
+  string id = 1;
+  string title = 2;
+  google.protobuf.Duration duration = 3;
+  google.protobuf.Timestamp created_at = 4;
+  string counter_id = 5;
+}
+
+// Request and response messages for creating a counter
+message CreateCounterRequest {
+  string title = 1;
+  string eventTitle = 2;
+}
+
+message CreateCounterResponse {
+  Counter counter = 1;
+}
+
+// Request message for getting counters
+// Empty message if all counters are requested, or specify an ID for a specific counter
+message GetCountersRequest {
+  string id = 1; // Optional: Specify an ID to get a specific counter
+}
+
+// Response message for getting counters
+message GetCountersResponse {
+  repeated Counter counters = 1;
+}
+
+// Request message for incrementing a counter
+message IncrementCounterRequest {
+  string id = 1;
+  string title = 2;
+}
+
+// Response message for incrementing a counter
+message IncrementCounterResponse {
+  Event event = 1;
+  Counter counter = 2;
+}
+
+// Request message for deleting a counter
+message DeleteCounterRequest {
+  string id = 1;
+}
+
+// Response message for deleting a counter
+// This can be an acknowledgment, possibly an empty message if no data needs to be returned
+message DeleteCounterResponse {
+  string message = 1;
+}
+
+// Request message for getting events associated with a counter
+message GetEventsRequest {
+  string id = 1; // Counter ID
+}
+
+// Response message for getting events
+message GetEventsResponse {
+  repeated Event events = 1;
+}
+
+// The service
+service CounterService {
+  rpc CreateCounter(CreateCounterRequest) returns (CreateCounterResponse) {}
+  rpc GetCounters(GetCountersRequest) returns (GetCountersResponse) {}
+  rpc IncrementCounter(IncrementCounterRequest) returns (IncrementCounterResponse) {}
+  rpc DeleteCounter(DeleteCounterRequest) returns (DeleteCounterResponse) {}
+  rpc GetEvents(GetEventsRequest) returns (GetEventsResponse) {}
+}
