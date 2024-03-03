@@ -1,5 +1,5 @@
 import { CounterListItem } from "@/components/CounterListItem";
-import { getRPC } from "@/grpc/client";
+import { getRPC } from "@/grpc/grpc-client";
 import { CounterServiceClient } from "@pb/counter/v1/counter.client";
 
 // Idk why revalidateTag is not working

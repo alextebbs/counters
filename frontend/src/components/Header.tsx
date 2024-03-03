@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import CreateCounterForm from "./CreateCounterForm";
+import { CreateCounterForm } from "./CreateCounterForm";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowLeft, Plus } from "lucide-react";

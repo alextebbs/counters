@@ -11,24 +11,34 @@ import {
 import { Timestamp } from "@pb/google/protobuf/timestamp";
 import { createCounter } from "@/grpc/actions";
 import { useGRPCFormState } from "@/grpc/useGRPCFormState";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { incrementCounterSchema } from "@/grpc/zod-schemas";
+import { ErrorMessage } from "@hookform/error-message";
 
 interface AddCounterFormProps {
   setAddFormIsActive: (isActive: boolean) => void;
 }
 
-const CreateCounterForm: FC<AddCounterFormProps> = ({ setAddFormIsActive }) => {
+export const CreateCounterForm: FC<AddCounterFormProps> = () => {
   const {
     register,
+    reset,
     watch,
     formState: { errors },
-  } = useForm<CounterServiceCreateRequest>();
+    setError,
+  } = useForm<CounterServiceCreateRequest>({
+    mode: "all",
+    resolver: zodResolver(incrementCounterSchema),
+  });
 
   const watchTitle = watch("title", " ..");
 
   const { formAction } = useGRPCFormState(
     createCounter,
     null,
-    CounterServiceCreateResponse
+    CounterServiceCreateResponse,
+    reset,
+    setError
   );
 
   return (
@@ -52,12 +62,12 @@ const CreateCounterForm: FC<AddCounterFormProps> = ({ setAddFormIsActive }) => {
               `border border-neutral-800 w-full py-2 px-4 focus:outline-none focus:border-neutral-700 rounded-md text-sm bg-transparent`,
               errors.title && `border-red-500 focus:border-red-500`
             )}
-            {...register("title", { required: true, minLength: 3 })}
+            {...register("title")}
           />
           <div>
             {errors.title ? (
               <span className="pl-2 text-red-500 text-xs uppercase tracking-[0.15em]">
-                Enter at least 3 characters.
+                <ErrorMessage name="title" errors={errors} />
               </span>
             ) : (
               <span className="pl-2 text-xs text-neutral-700">
@@ -81,12 +91,12 @@ const CreateCounterForm: FC<AddCounterFormProps> = ({ setAddFormIsActive }) => {
               `border border-neutral-800 w-full py-2 px-4 focus:outline-none focus:border-neutral-700 rounded-md text-sm bg-transparent`,
               errors.eventTitle && `border-red-500 focus:border-red-500`
             )}
-            {...register("eventTitle", { required: true, minLength: 3 })}
+            {...register("eventTitle")}
           />
           <div>
             {errors.eventTitle ? (
               <span className="pl-2 text-red-500 text-xs uppercase tracking-[0.15em]">
-                Enter at least 3 characters.
+                <ErrorMessage name="eventTitle" errors={errors} />
               </span>
             ) : (
               <span className="pl-2 text-xs text-neutral-700">
@@ -122,5 +132,3 @@ const CreateCounterForm: FC<AddCounterFormProps> = ({ setAddFormIsActive }) => {
     </form>
   );
 };
-
-export default CreateCounterForm;

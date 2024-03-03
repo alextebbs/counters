@@ -6,6 +6,9 @@ import {
   ServiceInfo,
   UnaryCall,
 } from "@protobuf-ts/runtime-rpc";
+import { revalidatePath } from "next/cache";
+import { FormState } from "./useGRPCFormState";
+import { ZodError } from "zod";
 
 export type InferResponse<T> = T extends (
   ...args: any[]
@@ -88,11 +91,6 @@ export const getRPC = async <
   return res.response;
 };
 
-export type FormState = {
-  status: "success";
-  message: Uint8Array;
-} | null;
-
 /**
  * Given a proto-generated gRPC service client, a method name, a validation
  * schema, and a response class, generate a server action that when called
@@ -138,12 +136,42 @@ export const createGRPCServerAction =
     responseClass: MessageType<Res>
   ) =>
   async (_: FormState | null, data: FormData) => {
-    const formData = schema.parse(data);
+    try {
+      // Simulate network latency
+      // await new Promise((resolve) => setTimeout(resolve, 200));
 
-    const res = await getRPC(client, method, formData);
+      const formData = schema.parse(data); // throws ZodError if invalid data
 
-    return {
-      status: "success" as const, // TODO: handle errors or whatever
-      message: responseClass.toBinary(res),
-    };
+      const res = await getRPC(client, method, formData); // does this error?
+
+      revalidatePath("/");
+
+      return {
+        status: "success" as const,
+        message: responseClass.toBinary(res),
+      };
+    } catch (e) {
+      if (e instanceof ZodError) {
+        return {
+          status: "error" as const,
+          message: "Invalid form data.",
+          errors: e.issues.map((issue) => ({
+            path: issue.path.join("."),
+            message: issue.message,
+          })),
+        };
+      }
+
+      if (e instanceof Error) {
+        return {
+          status: "error" as const, // shouldn't need these assertions...
+          message: e.message,
+        };
+      }
+
+      return {
+        status: "error" as const, // shouldn't need these assertions...
+        message: "something really bad happened",
+      };
+    }
   };

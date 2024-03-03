@@ -48,6 +48,23 @@ func (s *counterServer) Create(ctx context.Context, req *pbcounter.CounterServic
 	return &pbcounter.CounterServiceCreateResponse{Counter: &c}, nil
 }
 
+func (s *counterServer) Get(ctx context.Context, req *pbcounter.CounterServiceGetRequest) (*pbcounter.CounterServiceGetResponse, error) {
+	if req.Id == "" {
+		return nil, fmt.Errorf("must provide id of counter to get")
+	}
+
+	var c pbcounter.Counter
+	var t time.Time
+	err := s.db.QueryRow("SELECT id, title, count, timestamp FROM counters WHERE id = $1", req.Id).Scan(&c.Id, &c.Title, &c.Count, &t)
+	if err != nil {
+		log.Printf("Failed to get counter from database: %v", err)
+		return nil, err
+	}
+
+	c.Timestamp = timestamppb.New(t)
+	return &pbcounter.CounterServiceGetResponse{Counter: &c}, nil
+}
+
 func (s *counterServer) List(ctx context.Context, req *pbcounter.CounterServiceListRequest) (*pbcounter.CounterServiceListResponse, error) {
 	var rows *sql.Rows
 	var err error
@@ -158,21 +175,4 @@ func (s *counterServer) Delete(ctx context.Context, req *pbcounter.CounterServic
 	}
 
 	return &pbcounter.CounterServiceDeleteResponse{Message: fmt.Sprintf("Deleted counter with id: %s", c.Id)}, nil
-}
-
-func (s *counterServer) Get(ctx context.Context, req *pbcounter.CounterServiceGetRequest) (*pbcounter.CounterServiceGetResponse, error) {
-	if req.Id == "" {
-		return nil, fmt.Errorf("must provide id of counter to get")
-	}
-
-	var c pbcounter.Counter
-	var t time.Time
-	err := s.db.QueryRow("SELECT id, title, count, timestamp FROM counters WHERE id = $1", req.Id).Scan(&c.Id, &c.Title, &c.Count, &t)
-	if err != nil {
-		log.Printf("Failed to get counter from database: %v", err)
-		return nil, err
-	}
-
-	c.Timestamp = timestamppb.New(t)
-	return &pbcounter.CounterServiceGetResponse{Counter: &c}, nil
 }

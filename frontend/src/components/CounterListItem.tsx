@@ -4,6 +4,7 @@ import { FC } from "react";
 import { Timer } from "@/components/Timer";
 import { Counter } from "@pb/counter/v1/counter";
 import { Timestamp } from "@pb/google/protobuf/timestamp";
+import { getTimeDiff } from "@/utils/getTimeDiff";
 
 interface CounterListItemProps extends Counter {
   preview: boolean;
@@ -30,6 +31,7 @@ export const CounterListItem: FC<CounterListItemProps> = ({
         // We need to convert this to a Date here because NextJS can't pass
         // Protobuf Timestamps to the client, since they aren't "plain objects".
         timestamp={timestamp && Timestamp.toDate(timestamp)}
+        initialTimeDiff={timestamp && getTimeDiff(Timestamp.toDate(timestamp))}
       />
 
       <h1 className="text-sm mb-1">Time since {title}.</h1>

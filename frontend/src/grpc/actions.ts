@@ -1,6 +1,6 @@
 "use server";
 
-import { createGRPCServerAction } from "@/grpc/client";
+import { createGRPCServerAction } from "@/grpc/grpc-client";
 import {
   createCounterSchema,
   incrementCounterSchema,
