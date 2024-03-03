@@ -1,21 +1,19 @@
-TODO
+# Counters
 
-- counters should be created with 1 occurence
+This is a really over-engineered web app that lets you create timers which track
+events, and add occurrences to those events.
 
-#### create secrets
+- k8s
+- Tilt
+- Go
+- PostgresQL
+- Protobuf
+- gRPC
+- Typescript
+- NextJS 14
+- React server actions
+- Tailwind
 
-```
-k create secret generic postgres-credentials --from-env-file=.env
-```
-
-#### "jump pod"
-
-How to set this up so that I can just run a command to get into this
-container and do these things:
-
-```
-ϟ k exec -it --namespace counter jump-pod -- /bin/sh
-/ # apk update
-/ # apk add postgresql-client
-/ # psql -h postgres -p 5432 -U DB_USER -d DB_NAME
-```
+What's interesting about this application is the k8s development setup, and the
+generic functions on the frontend that provide interfaces and helpers for
+calling Go methods via gRPC inside of React server actions.
