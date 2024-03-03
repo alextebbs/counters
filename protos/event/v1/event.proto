@@ -32,6 +32,8 @@ message EventServiceListResponse {
 }
 
 service EventService {
+  // Get a single event by ID
   rpc Get(EventServiceGetRequest) returns (EventServiceGetResponse) {}
+  // List all events associated with a counter ID
   rpc List(EventServiceListRequest) returns (EventServiceListResponse) {}
 }

@@ -31,8 +31,6 @@ export const CreateCounterForm: FC<AddCounterFormProps> = () => {
     resolver: zodResolver(incrementCounterSchema),
   });
 
-  const watchTitle = watch("title", " ..");
-
   const { formAction } = useGRPCFormState(
     createCounter,
     null,
@@ -40,6 +38,8 @@ export const CreateCounterForm: FC<AddCounterFormProps> = () => {
     reset,
     setError
   );
+
+  const watchTitle = watch("title", "..");
 
   return (
     <form className={`bg-neutral-950`} action={formAction}>
@@ -117,7 +117,6 @@ export const CreateCounterForm: FC<AddCounterFormProps> = () => {
             preview={true}
             title={watchTitle}
             id={"fakeid"}
-            timestamp={Timestamp.create()}
           />
         </div>
 

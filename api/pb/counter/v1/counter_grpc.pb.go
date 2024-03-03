@@ -30,10 +30,15 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CounterServiceClient interface {
+	// Creates a counter and an initial event associated with it
 	Create(ctx context.Context, in *CounterServiceCreateRequest, opts ...grpc.CallOption) (*CounterServiceCreateResponse, error)
+	// Get a single counter by ID
 	Get(ctx context.Context, in *CounterServiceGetRequest, opts ...grpc.CallOption) (*CounterServiceGetResponse, error)
+	// List all counters
 	List(ctx context.Context, in *CounterServiceListRequest, opts ...grpc.CallOption) (*CounterServiceListResponse, error)
+	// Increment a counter and create an event associated with the incrementation
 	Increment(ctx context.Context, in *CounterServiceIncrementRequest, opts ...grpc.CallOption) (*CounterServiceIncrementResponse, error)
+	// Delete a counter and the events associated with it
 	Delete(ctx context.Context, in *CounterServiceDeleteRequest, opts ...grpc.CallOption) (*CounterServiceDeleteResponse, error)
 }
 
@@ -94,10 +99,15 @@ func (c *counterServiceClient) Delete(ctx context.Context, in *CounterServiceDel
 // All implementations must embed UnimplementedCounterServiceServer
 // for forward compatibility
 type CounterServiceServer interface {
+	// Creates a counter and an initial event associated with it
 	Create(context.Context, *CounterServiceCreateRequest) (*CounterServiceCreateResponse, error)
+	// Get a single counter by ID
 	Get(context.Context, *CounterServiceGetRequest) (*CounterServiceGetResponse, error)
+	// List all counters
 	List(context.Context, *CounterServiceListRequest) (*CounterServiceListResponse, error)
+	// Increment a counter and create an event associated with the incrementation
 	Increment(context.Context, *CounterServiceIncrementRequest) (*CounterServiceIncrementResponse, error)
+	// Delete a counter and the events associated with it
 	Delete(context.Context, *CounterServiceDeleteRequest) (*CounterServiceDeleteResponse, error)
 	mustEmbedUnimplementedCounterServiceServer()
 }

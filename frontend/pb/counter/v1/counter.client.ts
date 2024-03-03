@@ -22,22 +22,32 @@ import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
  */
 export interface ICounterServiceClient {
     /**
+     * Creates a counter and an initial event associated with it
+     *
      * @generated from protobuf rpc: Create(counter.v1.CounterServiceCreateRequest) returns (counter.v1.CounterServiceCreateResponse);
      */
     create(input: CounterServiceCreateRequest, options?: RpcOptions): UnaryCall<CounterServiceCreateRequest, CounterServiceCreateResponse>;
     /**
+     * Get a single counter by ID
+     *
      * @generated from protobuf rpc: Get(counter.v1.CounterServiceGetRequest) returns (counter.v1.CounterServiceGetResponse);
      */
     get(input: CounterServiceGetRequest, options?: RpcOptions): UnaryCall<CounterServiceGetRequest, CounterServiceGetResponse>;
     /**
+     * List all counters
+     *
      * @generated from protobuf rpc: List(counter.v1.CounterServiceListRequest) returns (counter.v1.CounterServiceListResponse);
      */
     list(input: CounterServiceListRequest, options?: RpcOptions): UnaryCall<CounterServiceListRequest, CounterServiceListResponse>;
     /**
+     * Increment a counter and create an event associated with the incrementation
+     *
      * @generated from protobuf rpc: Increment(counter.v1.CounterServiceIncrementRequest) returns (counter.v1.CounterServiceIncrementResponse);
      */
     increment(input: CounterServiceIncrementRequest, options?: RpcOptions): UnaryCall<CounterServiceIncrementRequest, CounterServiceIncrementResponse>;
     /**
+     * Delete a counter and the events associated with it
+     *
      * @generated from protobuf rpc: Delete(counter.v1.CounterServiceDeleteRequest) returns (counter.v1.CounterServiceDeleteResponse);
      */
     delete(input: CounterServiceDeleteRequest, options?: RpcOptions): UnaryCall<CounterServiceDeleteRequest, CounterServiceDeleteResponse>;
@@ -52,6 +62,8 @@ export class CounterServiceClient implements ICounterServiceClient, ServiceInfo 
     constructor(private readonly _transport: RpcTransport) {
     }
     /**
+     * Creates a counter and an initial event associated with it
+     *
      * @generated from protobuf rpc: Create(counter.v1.CounterServiceCreateRequest) returns (counter.v1.CounterServiceCreateResponse);
      */
     create(input: CounterServiceCreateRequest, options?: RpcOptions): UnaryCall<CounterServiceCreateRequest, CounterServiceCreateResponse> {
@@ -59,6 +71,8 @@ export class CounterServiceClient implements ICounterServiceClient, ServiceInfo 
         return stackIntercept<CounterServiceCreateRequest, CounterServiceCreateResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * Get a single counter by ID
+     *
      * @generated from protobuf rpc: Get(counter.v1.CounterServiceGetRequest) returns (counter.v1.CounterServiceGetResponse);
      */
     get(input: CounterServiceGetRequest, options?: RpcOptions): UnaryCall<CounterServiceGetRequest, CounterServiceGetResponse> {
@@ -66,6 +80,8 @@ export class CounterServiceClient implements ICounterServiceClient, ServiceInfo 
         return stackIntercept<CounterServiceGetRequest, CounterServiceGetResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * List all counters
+     *
      * @generated from protobuf rpc: List(counter.v1.CounterServiceListRequest) returns (counter.v1.CounterServiceListResponse);
      */
     list(input: CounterServiceListRequest, options?: RpcOptions): UnaryCall<CounterServiceListRequest, CounterServiceListResponse> {
@@ -73,6 +89,8 @@ export class CounterServiceClient implements ICounterServiceClient, ServiceInfo 
         return stackIntercept<CounterServiceListRequest, CounterServiceListResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * Increment a counter and create an event associated with the incrementation
+     *
      * @generated from protobuf rpc: Increment(counter.v1.CounterServiceIncrementRequest) returns (counter.v1.CounterServiceIncrementResponse);
      */
     increment(input: CounterServiceIncrementRequest, options?: RpcOptions): UnaryCall<CounterServiceIncrementRequest, CounterServiceIncrementResponse> {
@@ -80,6 +98,8 @@ export class CounterServiceClient implements ICounterServiceClient, ServiceInfo 
         return stackIntercept<CounterServiceIncrementRequest, CounterServiceIncrementResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * Delete a counter and the events associated with it
+     *
      * @generated from protobuf rpc: Delete(counter.v1.CounterServiceDeleteRequest) returns (counter.v1.CounterServiceDeleteResponse);
      */
     delete(input: CounterServiceDeleteRequest, options?: RpcOptions): UnaryCall<CounterServiceDeleteRequest, CounterServiceDeleteResponse> {

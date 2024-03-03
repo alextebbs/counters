@@ -8,7 +8,15 @@ export const formatDuration = (duration: Duration): string => {
   const daysPerYear = 365.25; // considering leap years
 
   let totalSeconds = Number(duration.seconds);
-  const nanos = duration.nanos;
+  let nanos = duration.nanos;
+
+  // First, calculate milliseconds from nanoseconds
+  const milliseconds = Math.floor(nanos / 1_000_000);
+  nanos -= milliseconds * 1_000_000; // Subtract the milliseconds part from nanos
+
+  // Then, calculate microseconds from the remaining nanoseconds
+  const microseconds = Math.floor(nanos / 1_000);
+  nanos -= microseconds * 1_000; // Subtract the microseconds part, leaving only nanoseconds
 
   const years = Math.floor(totalSeconds / (secondsPerDay * daysPerYear));
   totalSeconds -= years * secondsPerDay * daysPerYear;
@@ -25,16 +33,18 @@ export const formatDuration = (duration: Duration): string => {
   const minutes = Math.floor(totalSeconds / secondsPerMinute);
   totalSeconds -= minutes * secondsPerMinute;
 
-  const seconds = totalSeconds;
+  const seconds = totalSeconds; // Remaining seconds after calculating other components
 
   const parts = [
-    years > 0 ? `${years} year${years > 1 ? "s" : ""}` : "",
-    months > 0 ? `${months} month${months > 1 ? "s" : ""}` : "",
-    days > 0 ? `${days} day${days > 1 ? "s" : ""}` : "",
-    hours > 0 ? `${hours} hour${hours > 1 ? "s" : ""}` : "",
-    minutes > 0 ? `${minutes} minute${minutes > 1 ? "s" : ""}` : "",
-    seconds > 0 ? `${seconds} second${seconds > 1 ? "s" : ""}` : "",
-    nanos > 0 ? `${nanos} nanosecond${nanos > 1 ? "s" : ""}` : "",
+    years > 0 ? `${years}yr` : "",
+    months > 0 ? `${months}mo` : "",
+    days > 0 ? `${days}d` : "",
+    hours > 0 ? `${hours}hr` : "",
+    minutes > 0 ? `${minutes}m` : "",
+    seconds > 0 ? `${seconds}s` : "",
+    milliseconds > 0 ? `${milliseconds}ms` : "",
+    microseconds > 0 ? `${microseconds}µs` : "",
+    nanos > 0 ? `${nanos}ns` : "",
   ].filter((part) => part !== "");
 
   return parts.length > 0 ? parts.join(", ") : "0 seconds.";

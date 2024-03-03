@@ -27,7 +27,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EventServiceClient interface {
+	// Get a single event by ID
 	Get(ctx context.Context, in *EventServiceGetRequest, opts ...grpc.CallOption) (*EventServiceGetResponse, error)
+	// List all events associated with a counter ID
 	List(ctx context.Context, in *EventServiceListRequest, opts ...grpc.CallOption) (*EventServiceListResponse, error)
 }
 
@@ -61,7 +63,9 @@ func (c *eventServiceClient) List(ctx context.Context, in *EventServiceListReque
 // All implementations must embed UnimplementedEventServiceServer
 // for forward compatibility
 type EventServiceServer interface {
+	// Get a single event by ID
 	Get(context.Context, *EventServiceGetRequest) (*EventServiceGetResponse, error)
+	// List all events associated with a counter ID
 	List(context.Context, *EventServiceListRequest) (*EventServiceListResponse, error)
 	mustEmbedUnimplementedEventServiceServer()
 }

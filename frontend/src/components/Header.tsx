@@ -29,7 +29,7 @@ const Header = () => {
                 onClick={(e) => setAddFormIsActive(true)}
                 className="bg-neutral-900 rounded-md px-4 pr-2 py-1.5 uppercase tracking-[0.15em] text-xs text-neutral-300 flex items-center"
               >
-                <span className="text-transparent">New counter</span>
+                <span>New counter</span>
                 <Plus height={14} />
               </button>
             )}

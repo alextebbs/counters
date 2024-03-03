@@ -10,6 +10,14 @@ k8s_yaml("k8s/postgres/postgres-deployment.yaml")
 k8s_yaml("k8s/postgres/postgres-service.yaml")
 k8s_yaml("k8s/postgres/postgres-pvc.yaml")
 
+# ------------------------------------------------------------------------------
+# Redis
+# ------------------------------------------------------------------------------
+
+# Apply k8s resources for PostgreSQL
+k8s_yaml("k8s/redis/redis-deployment.yaml")
+k8s_yaml("k8s/redis/redis-service.yaml")
+k8s_yaml("k8s/redis/redis-pvc.yaml")
 
 # ------------------------------------------------------------------------------
 # JUMP POD

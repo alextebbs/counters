@@ -31,7 +31,11 @@ export const CounterListItem: FC<CounterListItemProps> = ({
         // We need to convert this to a Date here because NextJS can't pass
         // Protobuf Timestamps to the client, since they aren't "plain objects".
         timestamp={timestamp && Timestamp.toDate(timestamp)}
-        initialTimeDiff={timestamp && getTimeDiff(Timestamp.toDate(timestamp))}
+        initialTimeDiff={
+          timestamp
+            ? getTimeDiff(Timestamp.toDate(timestamp))
+            : getTimeDiff(new Date())
+        }
       />
 
       <h1 className="text-sm mb-1">Time since {title}.</h1>

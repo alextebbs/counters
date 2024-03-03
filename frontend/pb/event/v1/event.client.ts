@@ -16,10 +16,14 @@ import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
  */
 export interface IEventServiceClient {
     /**
+     * Get a single event by ID
+     *
      * @generated from protobuf rpc: Get(event.v1.EventServiceGetRequest) returns (event.v1.EventServiceGetResponse);
      */
     get(input: EventServiceGetRequest, options?: RpcOptions): UnaryCall<EventServiceGetRequest, EventServiceGetResponse>;
     /**
+     * List all events associated with a counter ID
+     *
      * @generated from protobuf rpc: List(event.v1.EventServiceListRequest) returns (event.v1.EventServiceListResponse);
      */
     list(input: EventServiceListRequest, options?: RpcOptions): UnaryCall<EventServiceListRequest, EventServiceListResponse>;
@@ -34,6 +38,8 @@ export class EventServiceClient implements IEventServiceClient, ServiceInfo {
     constructor(private readonly _transport: RpcTransport) {
     }
     /**
+     * Get a single event by ID
+     *
      * @generated from protobuf rpc: Get(event.v1.EventServiceGetRequest) returns (event.v1.EventServiceGetResponse);
      */
     get(input: EventServiceGetRequest, options?: RpcOptions): UnaryCall<EventServiceGetRequest, EventServiceGetResponse> {
@@ -41,6 +47,8 @@ export class EventServiceClient implements IEventServiceClient, ServiceInfo {
         return stackIntercept<EventServiceGetRequest, EventServiceGetResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * List all events associated with a counter ID
+     *
      * @generated from protobuf rpc: List(event.v1.EventServiceListRequest) returns (event.v1.EventServiceListResponse);
      */
     list(input: EventServiceListRequest, options?: RpcOptions): UnaryCall<EventServiceListRequest, EventServiceListResponse> {

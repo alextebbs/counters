@@ -56,9 +56,14 @@ message CounterServiceDeleteResponse {
 }
 
 service CounterService {
+  // Creates a counter and an initial event associated with it
   rpc Create(CounterServiceCreateRequest) returns (CounterServiceCreateResponse) {}
+  // Get a single counter by ID
   rpc Get(CounterServiceGetRequest) returns (CounterServiceGetResponse) {}
+  // List all counters
   rpc List(CounterServiceListRequest) returns (CounterServiceListResponse) {}
+  // Increment a counter and create an event associated with the incrementation
   rpc Increment(CounterServiceIncrementRequest) returns (CounterServiceIncrementResponse) {}
+  // Delete a counter and the events associated with it
   rpc Delete(CounterServiceDeleteRequest) returns (CounterServiceDeleteResponse) {}
 }

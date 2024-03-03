@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: counter
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:6.2
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+            - name: redis
+              mountPath: /data
+          args: ["--appendonly", "yes"]
+      volumes:
+        - name: redis
+          persistentVolumeClaim:
+            claimName: redis
