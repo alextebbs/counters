@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import AddCounterForm from "./AddCounterForm";
+import CreateCounterForm from "./CreateCounterForm";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowLeft, Plus } from "lucide-react";
@@ -40,7 +40,7 @@ const Header = () => {
         )}
       </div>
       {addFormIsActive && (
-        <AddCounterForm setAddFormIsActive={setAddFormIsActive} />
+        <CreateCounterForm setAddFormIsActive={setAddFormIsActive} />
       )}
     </>
   );

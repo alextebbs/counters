@@ -7,7 +7,7 @@ interface TimerProps {
   paused: boolean;
 }
 
-const Timer: FC<TimerProps> = ({ timestamp, paused }) => {
+export const Timer: FC<TimerProps> = ({ timestamp, paused }) => {
   const [timeDiff, setTimeDiff] = useState({
     days: 0,
     hours: 0,
@@ -72,5 +72,3 @@ const CounterDigit = ({ number, label }: { number: number; label: string }) => {
     </div>
   );
 };
-
-export default Timer;

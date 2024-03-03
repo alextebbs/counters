@@ -1,14 +1,12 @@
-// Additional request and response messages...
 syntax = "proto3";
 
-package main;
+package counter.v1;
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/duration.proto";
+import "event/v1/event.proto";
 
-option go_package = "github.com/alextebbs/counters/api/protos/counter";
+option go_package = "github.com/alextebbs/counters/pb/counter/v1;counter";
 
-// Message definition for Counter
 message Counter {
   string id = 1;
   string title = 2;
@@ -16,74 +14,51 @@ message Counter {
   google.protobuf.Timestamp timestamp = 4;
 }
 
-// Message definition for Event
-message Event {
-  string id = 1;
-  string title = 2;
-  google.protobuf.Duration duration = 3;
-  google.protobuf.Timestamp created_at = 4;
-  string counter_id = 5;
-}
-
-// Request and response messages for creating a counter
-message CreateCounterRequest {
+message CounterServiceCreateRequest {
   string title = 1;
-  string eventTitle = 2;
+  string event_title = 2;
 }
 
-message CreateCounterResponse {
+message CounterServiceCreateResponse {
   Counter counter = 1;
 }
 
-// Request message for getting counters
-// Empty message if all counters are requested, or specify an ID for a specific counter
-message GetCountersRequest {
+message CounterServiceGetRequest {
   string id = 1; // Optional: Specify an ID to get a specific counter
 }
 
-// Response message for getting counters
-message GetCountersResponse {
+message CounterServiceGetResponse {
+  Counter counter = 1;
+}
+
+message CounterServiceListRequest {}
+
+message CounterServiceListResponse {
   repeated Counter counters = 1;
 }
 
-// Request message for incrementing a counter
-message IncrementCounterRequest {
+message CounterServiceIncrementRequest {
   string id = 1;
   string title = 2;
 }
 
-// Response message for incrementing a counter
-message IncrementCounterResponse {
-  Event event = 1;
+message CounterServiceIncrementResponse {
+  event.v1.Event event = 1;
   Counter counter = 2;
 }
 
-// Request message for deleting a counter
-message DeleteCounterRequest {
+message CounterServiceDeleteRequest {
   string id = 1;
 }
 
-// Response message for deleting a counter
-// This can be an acknowledgment, possibly an empty message if no data needs to be returned
-message DeleteCounterResponse {
+message CounterServiceDeleteResponse {
   string message = 1;
 }
 
-// Request message for getting events associated with a counter
-message GetEventsRequest {
-  string id = 1; // Counter ID
-}
-
-// Response message for getting events
-message GetEventsResponse {
-  repeated Event events = 1;
-}
-
-// The service
 service CounterService {
-  rpc CreateCounter(CreateCounterRequest) returns (CreateCounterResponse) {}
-  rpc GetCounters(GetCountersRequest) returns (GetCountersResponse) {}
-  rpc IncrementCounter(IncrementCounterRequest) returns (IncrementCounterResponse) {}
-  rpc DeleteCounter(DeleteCounterRequest) returns (DeleteCounterResponse) {}
-  rpc GetEvents(GetEventsRequest) returns (GetEventsResponse) {}
+  rpc Create(CounterServiceCreateRequest) returns (CounterServiceCreateResponse) {}
+  rpc Get(CounterServiceGetRequest) returns (CounterServiceGetResponse) {}
+  rpc List(CounterServiceListRequest) returns (CounterServiceListResponse) {}
+  rpc Increment(CounterServiceIncrementRequest) returns (CounterServiceIncrementResponse) {}
+  rpc Delete(CounterServiceDeleteRequest) returns (CounterServiceDeleteResponse) {}
 }

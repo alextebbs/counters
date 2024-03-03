@@ -5,5 +5,3 @@ breaking:
 lint:
   use:
     - DEFAULT
-  ignore:
-    - c1/api

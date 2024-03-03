@@ -4,49 +4,30 @@ import { cn } from "@/utils/cn";
 import React, { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Plus, X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import {
+  CounterServiceIncrementRequest,
+  CounterServiceIncrementResponse,
+} from "@pb/counter/v1/counter";
+import { useGRPCFormState } from "@/grpc/useGRPCFormState";
+import { incrementCounter } from "@/grpc/actions";
 
 interface AddEventFormProps {
   id: string;
 }
 
-const AddEventForm: FC<AddEventFormProps> = ({ id }) => {
-  const router = useRouter();
-
+const CreateEventForm: FC<AddEventFormProps> = ({ id }) => {
   const [eventFormIsActive, setEventFormIsActive] = useState<boolean>(false);
 
   const {
     register,
-    reset,
-    handleSubmit,
     formState: { errors, isValid },
-  } = useForm<{ title: string }>();
+  } = useForm<CounterServiceIncrementRequest>();
 
-  const onSubmit = async ({ title }: { title: string }) => {
-    try {
-      const response = await fetch("http://localhost:8080/counters/increment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ counter_id: parseInt(id), title }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      setEventFormIsActive(false);
-      const json = await response.json();
-      console.log(json);
-
-      reset();
-
-      router.refresh();
-    } catch (error) {
-      console.error("Failed to create counter:", error);
-    }
-  };
+  const { formAction } = useGRPCFormState(
+    incrementCounter,
+    null,
+    CounterServiceIncrementResponse
+  );
 
   return (
     <>
@@ -70,7 +51,8 @@ const AddEventForm: FC<AddEventFormProps> = ({ id }) => {
         </button>
       </div>
       {eventFormIsActive && (
-        <form className={`bg-neutral-950`} onSubmit={handleSubmit(onSubmit)}>
+        <form className={`bg-neutral-950`} action={formAction}>
+          <input type="hidden" {...register("id", { value: id })} />
           <div className={`p-4 border-b border-neutral-800`}>
             <label
               htmlFor="title"
@@ -118,4 +100,4 @@ const AddEventForm: FC<AddEventFormProps> = ({ id }) => {
   );
 };
 
-export default AddEventForm;
+export default CreateEventForm;

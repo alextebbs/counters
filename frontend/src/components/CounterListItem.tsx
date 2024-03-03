@@ -1,16 +1,16 @@
 import { cn } from "@/utils/cn";
 import Link from "next/link";
 import { FC } from "react";
-import Timer from "./Timer";
-import { Counter } from "../../pb/counter/v1/counter";
-import { Timestamp } from "../../pb/google/protobuf/timestamp";
+import { Timer } from "@/components/Timer";
+import { Counter } from "@pb/counter/v1/counter";
+import { Timestamp } from "@pb/google/protobuf/timestamp";
 
 interface CounterListItemProps extends Counter {
   preview: boolean;
   paused: boolean;
 }
 
-const CounterListItem: FC<CounterListItemProps> = ({
+export const CounterListItem: FC<CounterListItemProps> = ({
   preview,
   paused,
   title,
@@ -18,7 +18,6 @@ const CounterListItem: FC<CounterListItemProps> = ({
   timestamp,
   id,
 }) => {
-  console.log("timestamp", timestamp);
   return (
     <div
       className={cn(
@@ -52,5 +51,3 @@ const CounterListItem: FC<CounterListItemProps> = ({
     </div>
   );
 };
-
-export default CounterListItem;

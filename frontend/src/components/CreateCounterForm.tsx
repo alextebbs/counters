@@ -3,46 +3,36 @@
 import { cn } from "@/utils/cn";
 import React, { FC } from "react";
 import { useForm } from "react-hook-form";
-import CounterListItem from "./CounterListItem";
-import { useRouter } from "next/navigation";
-import { GrpcWebFetchTransport } from "@protobuf-ts/grpcweb-transport";
-import { CounterServiceClient } from "../../pb/counter/v1/counter.client";
+import { CounterListItem } from "./CounterListItem";
+import {
+  CounterServiceCreateRequest,
+  CounterServiceCreateResponse,
+} from "@pb/counter/v1/counter";
+import { Timestamp } from "@pb/google/protobuf/timestamp";
+import { createCounter } from "@/grpc/actions";
+import { useGRPCFormState } from "@/grpc/useGRPCFormState";
 
 interface AddCounterFormProps {
   setAddFormIsActive: (isActive: boolean) => void;
 }
 
-let transport = new GrpcWebFetchTransport({
-  baseUrl: "http://localhost:8080",
-});
-
-let client = new CounterServiceClient(transport);
-
-const AddCounterForm: FC<AddCounterFormProps> = ({ setAddFormIsActive }) => {
-  const router = useRouter();
-
+const CreateCounterForm: FC<AddCounterFormProps> = ({ setAddFormIsActive }) => {
   const {
     register,
-    handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<{ title: string; eventTitle: string }>();
+  } = useForm<CounterServiceCreateRequest>();
 
   const watchTitle = watch("title", " ..");
-  const onSubmit = async ({
-    title,
-    eventTitle,
-  }: {
-    title: string;
-    eventTitle: string;
-  }) => {
-    let res = await client.createCounter({ title, eventTitle });
 
-    console.log("response", res);
-  };
+  const { formAction } = useGRPCFormState(
+    createCounter,
+    null,
+    CounterServiceCreateResponse
+  );
 
   return (
-    <form className={`bg-neutral-950`} onSubmit={handleSubmit(onSubmit)}>
+    <form className={`bg-neutral-950`} action={formAction}>
       <div className={`p-4 border-b border-neutral-800`}>
         <h2 className="text-center text-sm text-neutral-500 mb-2">
           Start a new counter
@@ -57,6 +47,7 @@ const AddCounterForm: FC<AddCounterFormProps> = ({ setAddFormIsActive }) => {
           <input
             type="text"
             id="title"
+            autoFocus
             className={cn(
               `border border-neutral-800 w-full py-2 px-4 focus:outline-none focus:border-neutral-700 rounded-md text-sm bg-transparent`,
               errors.title && `border-red-500 focus:border-red-500`
@@ -115,8 +106,8 @@ const AddCounterForm: FC<AddCounterFormProps> = ({ setAddFormIsActive }) => {
             paused={true}
             preview={true}
             title={watchTitle}
-            id={0}
-            timestamp={""}
+            id={"fakeid"}
+            timestamp={Timestamp.create()}
           />
         </div>
 
@@ -132,4 +123,4 @@ const AddCounterForm: FC<AddCounterFormProps> = ({ setAddFormIsActive }) => {
   );
 };
 
-export default AddCounterForm;
+export default CreateCounterForm;

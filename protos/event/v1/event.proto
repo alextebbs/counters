@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package event.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/alextebbs/counters/pb/event/v1;event";
+
+message Event {
+  string id = 1;
+  string title = 2;
+  google.protobuf.Duration duration = 3;
+  google.protobuf.Timestamp created_at = 4;
+  string counter_id = 5;
+}
+
+message EventServiceGetRequest {
+  string id = 1; // Event ID
+}
+
+message EventServiceGetResponse {
+  Event event = 1;
+}
+
+message EventServiceListRequest {
+  string id = 1; // Counter ID
+}
+
+message EventServiceListResponse {
+  repeated Event events = 1;
+}
+
+service EventService {
+  rpc Get(EventServiceGetRequest) returns (EventServiceGetResponse) {}
+  rpc List(EventServiceListRequest) returns (EventServiceListResponse) {}
+}
