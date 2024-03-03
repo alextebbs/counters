@@ -1,7 +1,10 @@
 # Counters
 
 This is a really over-engineered web app that lets you create timers which track
-events, and add occurrences to those events.
+occurences of events, and add occurrences to those events, keeping track of the
+time since the last occurence.
+
+Some of the tech used:
 
 - k8s
 - Tilt
@@ -15,5 +18,5 @@ events, and add occurrences to those events.
 - Tailwind
 
 What's interesting about this application is the k8s development setup, and the
-generic functions on the frontend that provide interfaces and helpers for
-calling Go methods via gRPC inside of React server actions.
+generic functions on the frontend that provide interfaces and helpers that
+create React server actions which call Go methods via gRPC.
